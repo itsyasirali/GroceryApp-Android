@@ -7,18 +7,24 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.itsyasirali.groceriesapp.ui.theme.*
+import com.itsyasirali.groceriesapp.utils.SharedPrefManager
 
 @Composable
 fun ProfileCard(
     modifier: Modifier = Modifier
 ) {
+    val mContext = LocalContext.current
+    val sharedPrefManager = remember { SharedPrefManager(mContext) }
+
     Row(
         modifier = modifier
             .padding(start = DIMENS_16dp, end = DIMENS_16dp)
@@ -43,14 +49,14 @@ fun ProfileCard(
                 .align(Alignment.CenterVertically),
         ) {
             Text(
-                text = stringResource(com.itsyasirali.groceriesapp.R.string.name_profile),
+                text = sharedPrefManager.getUser()!!.name,
                 fontFamily = GilroyFontFamily,
                 fontWeight = FontWeight.Bold,
                 fontSize = TEXT_SIZE_18sp,
                 color = Black
             )
             Text(
-                text = stringResource(com.itsyasirali.groceriesapp.R.string.email_profile),
+                text = sharedPrefManager.getUser()!!.email,
                 fontFamily = GilroyFontFamily,
                 fontWeight = FontWeight.Normal,
                 fontSize = TEXT_SIZE_12sp,

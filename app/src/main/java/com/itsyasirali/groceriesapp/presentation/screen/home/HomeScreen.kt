@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,6 +30,7 @@ import com.itsyasirali.groceriesapp.presentation.common.content.ListContentProdu
 import com.itsyasirali.groceriesapp.presentation.component.SearchViewBar
 import com.itsyasirali.groceriesapp.presentation.component.SliderBanner
 import com.itsyasirali.groceriesapp.ui.theme.*
+import com.itsyasirali.groceriesapp.utils.SharedPrefManager
 import com.itsyasirali.groceriesapp.utils.showToastShort
 
 @ExperimentalPagerApi
@@ -41,6 +43,7 @@ fun HomeScreen(
     val mContext = LocalContext.current
     val searchQuery by homeViewModel.searchQuery
     val allProducts by homeViewModel.productList.collectAsState()
+    val sharedPrefManager = remember { SharedPrefManager(mContext) }
 
     Scaffold { padding ->
         Column(
@@ -48,7 +51,7 @@ fun HomeScreen(
                 .verticalScroll(rememberScrollState())
                 .padding(padding)
         ) {
-            HeaderLocationHome()
+            HeaderLocationHome(location = sharedPrefManager.getUser()!!.address)
 
             SearchViewBar(
                 hint = stringResource(id = com.itsyasirali.groceriesapp.R.string.search_store),
@@ -85,6 +88,7 @@ fun HomeScreen(
 
 @Composable
 fun HeaderLocationHome(
+    location: String,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -112,7 +116,7 @@ fun HeaderLocationHome(
             )
             Text(
                 modifier = Modifier.align(Alignment.CenterVertically),
-                text = stringResource(com.itsyasirali.groceriesapp.R.string.sample_country),
+                text = location,
                 fontFamily = GilroyFontFamily,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = TEXT_SIZE_12sp,
@@ -130,5 +134,5 @@ fun clickToCart(context: Context, productItem: ProductItem, viewModel: HomeViewM
 @Preview(showBackground = true)
 @Composable
 fun HeaderLocationHomePreview() {
-    HeaderLocationHome()
+    HeaderLocationHome(location = "Pakistan")
 }

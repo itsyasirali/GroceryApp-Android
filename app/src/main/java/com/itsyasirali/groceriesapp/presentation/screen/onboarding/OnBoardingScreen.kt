@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -20,7 +21,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.itsyasirali.groceriesapp.navigation.graph.Graph
+import com.itsyasirali.groceriesapp.navigation.screen.Screen
 import com.itsyasirali.groceriesapp.ui.theme.*
+import com.itsyasirali.groceriesapp.utils.SharedPrefManager
 
 @Composable
 fun OnBoardingScreen(
@@ -28,12 +31,18 @@ fun OnBoardingScreen(
     navController: NavHostController,
     onBoardingViewModel: OnBoardingViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
+
     OnBoarding(
         modifier = modifier.fillMaxSize(),
         onClick = {
             onBoardingViewModel.saveOnBoardingState(isCompleted = true)
             navController.popBackStack()
-            navController.navigate(com.itsyasirali.groceriesapp.navigation.screen.Screen.SignIn.route)
+
+            val isLoggedIn = SharedPrefManager(context).isLoggedIn()
+            navController.navigate(if (isLoggedIn) Screen.Main.route else Screen.SignIn.route) {
+                popUpTo(Screen.OnBoarding.route) { inclusive = true }
+            }
         }
     )
 }

@@ -1,6 +1,7 @@
 package com.itsyasirali.groceriesapp.presentation.common.content
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -22,33 +23,37 @@ import com.itsyasirali.groceriesapp.utils.DataDummy
 
 @Composable
 fun ListContentAbout(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onItemClick: (String) -> Unit
 ) {
     LazyColumn(
         modifier = modifier.fillMaxWidth(),
         contentPadding = PaddingValues(top = DIMENS_32dp),
         verticalArrangement = Arrangement.spacedBy(DIMENS_8dp)
     ) {
-        items(DataDummy.generateDummyAbout()) { items ->
-            ItemAbout(aboutItem = items)
+        items(DataDummy.generateDummyAbout()) { item ->
+            ItemAbout(aboutItem = item, onClick = {
+                onItemClick(item.title)
+            })
         }
     }
 
     Spacer(modifier = Modifier.height(DIMENS_8dp))
-
     Divider(modifier = Modifier.height(DIMENS_1dp), color = GrayBorderStroke)
 }
 
 @Composable
 fun ItemAbout(
     modifier: Modifier = Modifier,
-    aboutItem: AboutItem
+    aboutItem: AboutItem,
+    onClick: () -> Unit
 ) {
     Column {
         Divider(modifier = Modifier.height(DIMENS_1dp), color = GrayBorderStroke)
 
         Row(
             modifier = modifier
+                .clickable { onClick() }
                 .padding(start = DIMENS_16dp, end = DIMENS_16dp, top = DIMENS_20dp)
                 .fillMaxWidth()
         ) {
@@ -79,12 +84,15 @@ fun ItemAbout(
     }
 }
 
+/*
 @Preview(showBackground = true)
 @Composable
 fun ListContentAboutPreview() {
     ListContentAbout()
 }
+*/
 
+/*
 @Preview(showBackground = true)
 @Composable
 fun ItemAboutPreview() {
@@ -94,4 +102,4 @@ fun ItemAboutPreview() {
             title = "Orders"
         )
     )
-}
+}*/

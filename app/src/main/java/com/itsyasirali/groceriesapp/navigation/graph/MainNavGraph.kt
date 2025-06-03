@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.itsyasirali.groceriesapp.navigation.screen.BottomNavItemScreen
 import com.itsyasirali.groceriesapp.navigation.screen.Screen
+import com.itsyasirali.groceriesapp.presentation.mydetails.MyDetailsScreen
 import com.itsyasirali.groceriesapp.presentation.screen.about.AboutScreen
 import com.itsyasirali.groceriesapp.presentation.screen.cart.CartScreen
 import com.itsyasirali.groceriesapp.presentation.screen.detail.DetailScreen
@@ -33,12 +34,17 @@ fun MainNavGraph(navController: NavHostController) {
             CartScreen()
         }
         composable(route = BottomNavItemScreen.About.route) {
-            AboutScreen()
+            AboutScreen(navController = navController)
         }
 
         searchNavGraph()
 
         detailsNavGraph()
+
+        composable("my_details") {
+            MyDetailsScreen()
+        }
+
     }
 }
 

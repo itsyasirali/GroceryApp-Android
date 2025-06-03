@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -21,6 +22,7 @@ import androidx.navigation.NavHostController
 import com.itsyasirali.groceriesapp.navigation.graph.Graph
 import com.itsyasirali.groceriesapp.navigation.screen.Screen
 import com.itsyasirali.groceriesapp.ui.theme.Green
+import com.itsyasirali.groceriesapp.utils.SharedPrefManager
 import kotlinx.coroutines.delay
 
 @Composable
@@ -30,6 +32,7 @@ fun SplashScreen(
 ) {
     val onBoardingIsCompleted by splashViewModel.onBoardingIsCompleted.collectAsState()
     val scale = remember { Animatable(0f) }
+    val context = LocalContext.current
 
     LaunchedEffect(key1 = true) {
         scale.animateTo(
@@ -45,7 +48,10 @@ fun SplashScreen(
         navController.popBackStack()
 
         if (onBoardingIsCompleted) {
-            navController.navigate(Screen.SignIn.route)
+            val isLoggedIn = SharedPrefManager(context).isLoggedIn()
+            navController.navigate(if (isLoggedIn) Screen.Main.route else Screen.SignIn.route) {
+                popUpTo(Screen.OnBoarding.route) { inclusive = true }
+            }
         } else {
             navController.navigate(Screen.OnBoarding.route)
         }
@@ -61,7 +67,6 @@ fun Splash(
 ) {
     Box(
         modifier = modifier
-            .background(Green)
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
@@ -69,7 +74,7 @@ fun Splash(
             modifier = Modifier
                 .scale(scale)
                 .padding(all = 64.dp),
-            painter = painterResource(id = com.itsyasirali.groceriesapp.R.drawable.img_logo_app),
+            painter = painterResource(id = com.itsyasirali.groceriesapp.R.drawable.grocery_logo),
             contentDescription = stringResource(com.itsyasirali.groceriesapp.R.string.logo_app)
         )
     }

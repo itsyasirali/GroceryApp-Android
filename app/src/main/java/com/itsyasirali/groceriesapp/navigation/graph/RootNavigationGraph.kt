@@ -1,6 +1,8 @@
 package com.itsyasirali.groceriesapp.navigation.graph
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -10,6 +12,7 @@ import com.itsyasirali.groceriesapp.presentation.screen.onboarding.OnBoardingScr
 import com.itsyasirali.groceriesapp.presentation.screen.signin.SignInScreen
 import com.itsyasirali.groceriesapp.presentation.screen.signup.SignUpScreen
 import com.itsyasirali.groceriesapp.presentation.screen.splash.SplashScreen
+import com.itsyasirali.groceriesapp.utils.SharedPrefManager
 
 @Composable
 fun RootNavigationGraph(navController: NavHostController) {
@@ -19,11 +22,11 @@ fun RootNavigationGraph(navController: NavHostController) {
         startDestination = Screen.Splash.route
     ) {
         composable(route = Screen.Splash.route) {
-            SplashScreen(navController = navController)
+            SplashScreen(navController)
         }
 
         composable(route = Screen.OnBoarding.route) {
-            OnBoardingScreen(navController = navController)
+            OnBoardingScreen(navController =navController)
         }
 
         composable(route = Screen.SignIn.route) {
@@ -33,7 +36,7 @@ fun RootNavigationGraph(navController: NavHostController) {
                         popUpTo(Screen.SignIn.route) { inclusive = true }
                     }
                 },
-                onNavigateToSignUp  = {
+                onNavigateToSignUp = {
                     navController.navigate(Screen.SignUp.route)
                 }
             )
