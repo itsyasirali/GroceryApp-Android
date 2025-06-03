@@ -90,4 +90,6 @@ dependencies {
     // Testing
     androidTestImplementation "androidx.navigation:navigation-testing:2.5.3"
 
+    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+
 }

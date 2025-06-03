@@ -31,9 +31,9 @@ fun OnBoardingScreen(
     OnBoarding(
         modifier = modifier.fillMaxSize(),
         onClick = {
-            navController.popBackStack()
-            navController.navigate(Graph.MAIN)
             onBoardingViewModel.saveOnBoardingState(isCompleted = true)
+            navController.popBackStack()
+            navController.navigate(com.itsyasirali.groceriesapp.navigation.screen.Screen.SignIn.route)
         }
     )
 }

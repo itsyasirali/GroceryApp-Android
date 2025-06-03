@@ -44,8 +44,11 @@ fun SplashScreen(
         delay(1200L)
         navController.popBackStack()
 
-        if (onBoardingIsCompleted) navController.navigate(Graph.MAIN)
-        else navController.navigate(Screen.OnBoarding.route)
+        if (onBoardingIsCompleted) {
+            navController.navigate(Screen.SignIn.route)
+        } else {
+            navController.navigate(Screen.OnBoarding.route)
+        }
     }
 
     Splash(scale = scale.value)
